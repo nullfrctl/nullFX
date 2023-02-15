@@ -41,7 +41,7 @@ uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
 > = 1.0;
 
 uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
-    ui_label = "Green-Red (a) & Blue-Yellow (b)";
+    ui_label = "Green-Red (a) & Yellow-Blue (b)";
     ui_category = "Oklab settings.";
 > = 1.0;
 
