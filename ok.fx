@@ -41,7 +41,7 @@ uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
 > = 1.0;
 
 uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
-    ui_label = "Green-Red (a) & Yellow-Blue (b)";
+    ui_label = "Green-Red (a) & Blue-Yellow (b)";
     ui_category = "Oklab settings.";
 > = 1.0;
 
@@ -132,8 +132,5 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
 
 technique Okcolor < ui_label = "Ok color spaces"; >
 {
-    __pass (
-        PixelShader = PS_Okcolor, // PS
-        VertexShader = PostProcessVS // VS
-    )
+    __pass (PS_Okcolor, PostProcessVS)
 }

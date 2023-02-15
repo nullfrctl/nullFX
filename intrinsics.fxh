@@ -1,6 +1,8 @@
 // Accepted #defines: _HALLEY_ITERATION [0/1]
 #pragma once
 
+/* nullFX: Intrinsic functions--alike to a common.fxh on other repositories. */
+
 #define __overload_float( f ) \
 float2 f(in float2 x) { return float2(f(x.x), f(x.y)); } \
 float3 f(in float3 x) { return float3(f(x.xy), f(x.z)); } \
@@ -50,4 +52,4 @@ namespace nullFX
 }
 
 #define __pass(PS, VS) \
-pass { PS; VS; SRGBWriteEnable = true; }
+pass { PixelShader = PS; VertexShader = VS; SRGBWriteEnable = true; }

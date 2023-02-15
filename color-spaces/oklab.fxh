@@ -1,4 +1,3 @@
-// Accepted #defines: _OKLCH [0/1]
 #pragma once
 
 /* nullFX/Color spaces: Oklab */
@@ -90,6 +89,7 @@ float3 OklchToSRGB(in float3 oklch)
     return OklabToSRGB(LChToLab(oklch));
 }
 
+// Lr toe.
 float ApplyToe(float x)
 {
     float k_1 = 0.206f;
