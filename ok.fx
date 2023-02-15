@@ -45,10 +45,10 @@ uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
     ui_category = "Oklab settings.";
 > = 1.0;
 
+#if OK_OKHSV_CORRECTION_ENABLE
 // Used: SRGBToOkhsv(), OkhsvToSRGB().
 #include "color-spaces/okhsv-okhsl.fxh"
 
-#if OK_OKHSV_CORRECTION_ENABLE
 uniform float _Saturation < __UNIFORM_DRAG_FLOAT1
     ui_label = "Saturation";
     ui_min = 0.0;
