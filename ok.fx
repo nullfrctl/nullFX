@@ -1,9 +1,9 @@
 /* nullFX: "Ok color spaces." */
 
-// Used: nullFX::BackBuffer(), __pass(MACRO).
+// Used: nullFX::BackBuffer, __pass(MACRO).
 #include "intrinsics.fxh"
 
-// Used: PostProcessVS().a
+// Used: PostProcessVS().
 #include "ReShade.fxh"
 #include "ReShadeUI.fxh"
 
@@ -68,23 +68,26 @@ uniform float _Saturation < __UNIFORM_DRAG_FLOAT1
 
 uniform float _Vibrance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Vibrance";
+    ui_min = 0.0;
     ui_category = "Okhsv settings.";
     ui_tooltip = "This is the equivalent of saturation above but instead applied on the\n"
                  "\"brightness\" or \"value\" of a color. It's not the same as luminance.";
-    ui_min = 0.0;
 > = 1.0;
 #endif
 
 #if OK_GAMUT_CLIPPING_ENABLE
+// Used: GamutClip().
+#include "color-spaces/gamut-clipping.fxh"
+
 uniform int _GamutClippingMode < __UNIFORM_COMBO_INT1
     ui_label = "Gamut Clipping Mode";
+    ui_category = "Gamut clipping.";
     ui_items = "None.\0"
                "Preserve chroma.\0"
                "Project to 0.5.\0"
                "Project to Lcusp.\0"
                "[Adaptive] L0/05.\0"
                "[Adaptive] L0/Lcusp.\0";
-    ui_category = "Gamut clipping.";
     ui_tooltip = "How to map colors back into SRGB space if they exceed [0.0,1.0].\n"
                  "This would be useful if you need to set a really high chrominance/saturation\n"
                  "or really high luminance/vibrance, as well as really low luminance/vibrance.\n"
@@ -104,9 +107,6 @@ uniform float _GamutClippingAlpha < __UNIFORM_DRAG_FLOAT1
     ui_min = 0.0;
     ui_category = "Gamut clipping.";
 > = 1.0;
-
-// Used: GamutClip().
-#include "color-spaces/gamut-clipping.fxh"
 #endif
 
 
@@ -151,7 +151,7 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
     return color;
 }
 
-technique Okcolor < ui_label = "Ok color spaces"; >
+technique Okcolor < ui_label = "Ok color spaces."; >
 {
-    __pass (PS_Okcolor, PostProcessVS)
+    __pass(PS_Okcolor, PostProcessVS)
 }
