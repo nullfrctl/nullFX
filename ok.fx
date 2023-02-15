@@ -24,6 +24,7 @@ uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Luminance";
     ui_min = 0.0;
     ui_category = "Oklab settings.";
+    ui_tooltip = "The \"brightness\" of a color that does not affect its perceived chroma vibrancy.";
 > = 1.0;
 
 uniform bool _ApplyToe <
@@ -38,6 +39,9 @@ uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Chrominance";
     ui_min = 0.0;
     ui_category = "Oklab settings.";
+    ui_tooltip = "Non-uniform \"vibrance\" of a color. Different from saturation due to the\n"
+                 "fact that it is non-uniform, but also means that perceived luminance does not\n"
+                 "change.";
 > = 1.0;
 
 uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
@@ -53,11 +57,20 @@ uniform float _Saturation < __UNIFORM_DRAG_FLOAT1
     ui_label = "Saturation";
     ui_min = 0.0;
     ui_category = "Okhsv settings.";
+    ui_tooltip = "This is a perceptually accurate, yet uniform saturation.\n"
+                 "It's difference from the chrominance above is that Okhsv is simply a\n"
+                 "square representation of Oklch, meaning that the non-uniform chrominance\n"
+                 "is repurposed into a saturation value that applies across all colors equally.\n"
+                 "\n"
+                 "Because we do not use something like normal HSV, though, perceived lightness does\n"
+                 "not change as dramatically.";
 > = 1.0;
 
 uniform float _Vibrance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Vibrance";
     ui_category = "Okhsv settings.";
+    ui_tooltip = "This is the equivalent of saturation above but instead applied on the\n"
+                 "\"brightness\" or \"value\" of a color. It's not the same as luminance.";
     ui_min = 0.0;
 > = 1.0;
 #endif
@@ -69,9 +82,17 @@ uniform int _GamutClippingMode < __UNIFORM_COMBO_INT1
                "Preserve chroma.\0"
                "Project to 0.5.\0"
                "Project to Lcusp.\0"
-               "(Adaptive) L0/05.\0"
-               "(Adaptive) L0/Lcusp.\0";
+               "[Adaptive] L0/05.\0"
+               "[Adaptive] L0/Lcusp.\0";
     ui_category = "Gamut clipping.";
+    ui_tooltip = "How to map colors back into SRGB space if they exceed [0.0,1.0].\n"
+                 "This would be useful if you need to set a really high chrominance/saturation\n"
+                 "or really high luminance/vibrance, as well as really low luminance/vibrance.\n"
+                 "\n"
+                 "Gamut clipping would map the out-of-gamut colors to their closest equivalent in\n"
+                 "SRGB space. The options above are for what method to find the closest equivalent\n"
+                 "\n"
+                 "Adaptive algorithms use the alpha variable below.";
 > = 5;
 
 uniform float _GamutClippingAlpha < __UNIFORM_DRAG_FLOAT1
