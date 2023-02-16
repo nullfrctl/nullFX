@@ -22,7 +22,7 @@
 
 uniform bool _ApplyToe <
     ui_label = "Apply Lr Toe";
-    ui_category = "Oklab settings.";
+    __ui_category("Oklab settings.");
     ui_tooltip = "Apply Bjorn's Lr toe to the L channel to get a CIE-L*ab like lightness estimate.\n"
                  "\n"
                  "This could allow you to get a different style of luminance modification.";
@@ -31,7 +31,7 @@ uniform bool _ApplyToe <
 uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Luminance";
     ui_min = 0.0;
-    ui_category = "Oklab settings.";
+    __ui_category("Oklab settings.");
     ui_tooltip = "The \"brightness\" of a color that does not affect its perceived chroma vibrancy.";
     ui_spacing = 3;
 > = 1.0;
@@ -39,7 +39,7 @@ uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
 uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Chrominance";
     ui_min = 0.0;
-    ui_category = "Oklab settings.";
+    __ui_category("Oklab settings.");
     ui_tooltip = "Non-uniform \"vibrance\" of a color. Different from saturation due to the\n"
                  "fact that it is non-uniform, but also means that perceived luminance does not\n"
                  "change.";
@@ -50,12 +50,12 @@ uniform float _LChHue < __UNIFORM_SLIDER_FLOAT1
 	ui_min = -180.0;
 	ui_max = 180.0;
 	ui_step = 1.0;
-	ui_category = "Oklab settings.";
+    __ui_category("Oklab settings.");
 > = 0.0;
 
 uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
     ui_label = "Green-Red (a) & Blue-Yellow (b)";
-    ui_category = "Oklab settings.";
+    __ui_category("Oklab settings.");
     ui_spacing = 5;
 > = 1.0;
 
@@ -68,13 +68,13 @@ uniform float _OkhsvHue < __UNIFORM_SLIDER_FLOAT1
 	ui_min = -180.0;
 	ui_max = 180.0;
 	ui_step = 1.0;
-	ui_category = "Okhsv settings.";
+    __ui_category("Okhsv settings.");
 > = 0.0;
 
 uniform float _Saturation < __UNIFORM_DRAG_FLOAT1
     ui_label = "Saturation";
     ui_min = 0.0;
-    ui_category = "Okhsv settings.";
+    __ui_category("Okhsv settings.");
     ui_tooltip = "This is a perceptually accurate, yet uniform saturation.\n"
                  "It's difference from the chrominance above is that Okhsv is simply a\n"
                  "square representation of Oklch, meaning that the non-uniform chrominance\n"
@@ -87,7 +87,7 @@ uniform float _Saturation < __UNIFORM_DRAG_FLOAT1
 uniform float _Vibrance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Vibrance";
     ui_min = 0.0;
-    ui_category = "Okhsv settings.";
+    __ui_category("Okhsv settings.");
     ui_tooltip = "This is the equivalent of saturation above but instead applied on the\n"
                  "\"brightness\" or \"value\" of a color. It's not the same as luminance.";
 > = 1.0;
@@ -99,7 +99,7 @@ uniform float _Vibrance < __UNIFORM_DRAG_FLOAT1
 
 uniform int _GamutClippingMode < __UNIFORM_COMBO_INT1
     ui_label = "Gamut Clipping Mode";
-    ui_category = "Gamut clipping.";
+    __ui_category("Gamut clipping.");
     ui_items = "None.\0"
                "Preserve chroma.\0"
                "Project to 0.5.\0"
@@ -126,7 +126,7 @@ uniform float _GamutClippingAlpha < __UNIFORM_DRAG_FLOAT1
 				 "Alpha can be used to accentuate the effects of the gamut clipping.";
     ui_min = 1.0;
     ui_step = 0.1;
-    ui_category = "Gamut clipping.";
+    __ui_category("Gamut clipping.");
 > = 1.0;
 #endif
 

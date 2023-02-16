@@ -54,4 +54,6 @@ namespace nullFX
 #define __pass(PS, VS) \
 pass { PixelShader = PS; VertexShader = VS; SRGBWriteEnable = true; }
 
+#define __ui_category(cat) ui_category = cat##"\n\n"
+
 // END OF FILE.
