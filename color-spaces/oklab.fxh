@@ -2,7 +2,7 @@
 
 /* nullFX/Color spaces: Oklab */
 
-// Used: cbrt(), pow3().
+// Used: cbrt(), pow3(), pow2().
 #include "intrinsics.fxh"
 
 // Convert SRGB to "LMS" values.
@@ -27,6 +27,7 @@ float3 SRGBToOklab(in float3 srgb)
     
     // Again, column-major assumption.
     float3 oklab = mul(lms_to_oklab, lms);
+	oklab.yz = clamp(oklab.yz, -1.25, +1.25); // a and b can only go from -1.25 and +1.25.
 
     return oklab;
 }
@@ -45,6 +46,9 @@ static const float3x3 lms_to_srgb = float3x3(
 
 float3 OklabToSRGB(in float3 oklab)
 {
+	// Clamp to normal range.
+	oklab.yz = clamp(oklab.yz, -1.25, +1.25);
+
     // Convert our Oklab values back to LMS. 
     // Since in the original math there is no multiplication done on the L channel, 
     // we just set it to 1.0.
@@ -61,6 +65,7 @@ float3 OklabToSRGB(in float3 oklab)
 float3 LabToLCh(in float3 lab)
 {
     float C = sqrt(pow2(lab.y) + pow2(lab.z)); // sqrt(a^2 + b^2)
+    C = clamp(C, 0.0, 0.4); // C will not exceed 0.4.
     float h = atan2(lab.z, lab.y); // atan(b/a)
 
     // L,C,h.
@@ -73,6 +78,10 @@ float3 LChToLab(in float3 lch)
     float a = lch.y * cos(lch.z); // C * cos(h);
     float b = lch.y * sin(lch.z); // C * sin(h);
 
+    // Make sure our converted colors stay in range.
+    a = clamp(a, -1.25, +1.25);
+    b = clamp(b, -1.25, +1.25);
+
     // L,a,b.
     return float3(lch.x, a, b);
 }
@@ -83,7 +92,6 @@ float3 SRGBToOklch(in float3 srgb)
     return LabToLCh(SRGBToOklab(srgb));
 }
 
-// . . .
 float3 OklchToSRGB(in float3 oklch)
 {
     return OklabToSRGB(LChToLab(oklch));

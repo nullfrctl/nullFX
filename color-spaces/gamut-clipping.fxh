@@ -189,7 +189,7 @@ float FindGamutIntersection(float a, float b, float L1, float C1, float L0)
 
 float3 GamutClip_PreserveChroma(float3 rgb)
 {
-    if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
+    if (rgb.r <= 1.f && rgb.g <= 1.f && rgb.b <= 1.f && rgb.r >= 0.f && rgb.g >= 0.f && rgb.b >= 0.f)
         return rgb;
 
     float3 lab = SRGBToOklab(rgb);
@@ -211,7 +211,7 @@ float3 GamutClip_PreserveChroma(float3 rgb)
 
 float3 GamutClip_ProjectTo05(float3 rgb)
 {
-    if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
+    if (rgb.r <= 1.f && rgb.g <= 1.f && rgb.b <= 1.f && rgb.r >= 0.f && rgb.g >= 0.f && rgb.b >= 0.f)
         return rgb;
 
     float3 lab = SRGBToOklab(rgb);
@@ -233,7 +233,7 @@ float3 GamutClip_ProjectTo05(float3 rgb)
 
 float3 GamutClip_ProjectToLcusp(float3 rgb)
 {
-    if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
+    if (rgb.r <= 1.f && rgb.g <= 1.f && rgb.b <= 1.f && rgb.r >= 0.f && rgb.g >= 0.f && rgb.b >= 0.f)
         return rgb;
 
     float3 lab = SRGBToOklab(rgb);
@@ -259,7 +259,7 @@ float3 GamutClip_ProjectToLcusp(float3 rgb)
 
 float3 AdaptiveGamutClip_L0_05(float3 rgb, float alpha)
 {
-    if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
+    if (rgb.r <= 1.f && rgb.g <= 1.f && rgb.b <= 1.f && rgb.r >= 0.f && rgb.g >= 0.f && rgb.b >= 0.f)
         return rgb;
 
     float3 lab = SRGBToOklab(rgb);
@@ -283,7 +283,7 @@ float3 AdaptiveGamutClip_L0_05(float3 rgb, float alpha)
 
 float3 AdaptiveGamutClip_L0_Lcusp(float3 rgb, float alpha)
 {
-    if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
+    if (rgb.r <= 1.f && rgb.g <= 1.f && rgb.b <= 1.f && rgb.r >= 0.f && rgb.g >= 0.f && rgb.b >= 0.f)
         return rgb;
 
     float3 lab = SRGBToOklab(rgb);
