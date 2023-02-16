@@ -53,3 +53,5 @@ namespace nullFX
 
 #define __pass(PS, VS) \
 pass { PixelShader = PS; VertexShader = VS; SRGBWriteEnable = true; }
+
+// END OF FILE.

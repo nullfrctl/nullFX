@@ -61,3 +61,6 @@ technique (TitleCaseWithNoSpaces) < ui_label = "(Sentence case with period at th
 {
     __pass((The PixelShader), PostProcessVS)
 }
+
+// END OF FILE.
+```

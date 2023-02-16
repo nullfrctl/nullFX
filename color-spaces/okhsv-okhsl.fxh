@@ -194,3 +194,5 @@ float3 SRGBToOkhsv(float3 rgb)
 
     return float3 (h, s, v );
 }
+
+// END OF FILE.

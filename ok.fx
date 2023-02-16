@@ -20,13 +20,6 @@
 // Used: SRGBToOklab(), OklabToSRGB(), LabToLCh(), LChToLab(), SRGBToOklch(), OklchToSRGB().
 #include "color-spaces/oklab.fxh"
 
-uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
-    ui_label = "Luminance";
-    ui_min = 0.0;
-    ui_category = "Oklab settings.";
-    ui_tooltip = "The \"brightness\" of a color that does not affect its perceived chroma vibrancy.";
-> = 1.0;
-
 uniform bool _ApplyToe <
     ui_label = "Apply Lr Toe";
     ui_category = "Oklab settings.";
@@ -34,6 +27,14 @@ uniform bool _ApplyToe <
                  "\n"
                  "This could allow you to get a different style of luminance modification.";
 > = true;
+
+uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
+    ui_label = "Luminance";
+    ui_min = 0.0;
+    ui_category = "Oklab settings.";
+    ui_tooltip = "The \"brightness\" of a color that does not affect its perceived chroma vibrancy.";
+    ui_spacing = 3;
+> = 1.0;
 
 uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Chrominance";
@@ -44,14 +45,31 @@ uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
                  "change.";
 > = 1.0;
 
+uniform float _LChHue < __UNIFORM_SLIDER_FLOAT1
+	ui_label = "Hue";
+	ui_min = -180.0;
+	ui_max = 180.0;
+	ui_step = 1.0;
+	ui_category = "Oklab settings.";
+> = 0.0;
+
 uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
     ui_label = "Green-Red (a) & Blue-Yellow (b)";
     ui_category = "Oklab settings.";
+    ui_spacing = 5;
 > = 1.0;
 
 #if OK_OKHSV_CORRECTION_ENABLE
 // Used: SRGBToOkhsv(), OkhsvToSRGB().
 #include "color-spaces/okhsv-okhsl.fxh"
+
+uniform float _OkhsvHue < __UNIFORM_SLIDER_FLOAT1
+	ui_label = "Hue";
+	ui_min = -180.0;
+	ui_max = 180.0;
+	ui_step = 1.0;
+	ui_category = "Okhsv settings.";
+> = 0.0;
 
 uniform float _Saturation < __UNIFORM_DRAG_FLOAT1
     ui_label = "Saturation";
@@ -86,8 +104,8 @@ uniform int _GamutClippingMode < __UNIFORM_COMBO_INT1
                "Preserve chroma.\0"
                "Project to 0.5.\0"
                "Project to Lcusp.\0"
-               "[Adaptive] L0/05.\0"
-               "[Adaptive] L0/Lcusp.\0";
+               "Project to L0/05.    [Adaptive]\0"
+               "Project to L0/Lcusp. [Adaptive]\0";
     ui_tooltip = "How to map colors back into SRGB space if they exceed [0.0,1.0].\n"
                  "This would be useful if you need to set a really high chrominance/saturation\n"
                  "or really high luminance/vibrance, as well as really low luminance/vibrance.\n"
@@ -96,19 +114,21 @@ uniform int _GamutClippingMode < __UNIFORM_COMBO_INT1
                  "SRGB space. The options above are for what method to find the closest equivalent\n"
                  "\n"
                  "Adaptive algorithms use the alpha variable below.";
-> = 5;
+> = 4;
 
 uniform float _GamutClippingAlpha < __UNIFORM_DRAG_FLOAT1
-    ui_label = "Adaptive Gamut Clipping Alpha";
+    ui_label = "Gamut Clipping Alpha";
     ui_tooltip = "The alpha value to apply to the adaptive gamut clipping algorithms.\n"
                  "\n"
                  "This only applies for gamut clipping modes marked adaptive, otherwise\n"
-                 "they have no effect";
-    ui_min = 0.0;
+                 "they have no effect\n"
+				 "\n"
+				 "Alpha can be used to accentuate the effects of the gamut clipping.";
+    ui_min = 1.0;
+    ui_step = 0.1;
     ui_category = "Gamut clipping.";
 > = 1.0;
 #endif
-
 
 float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target
 {
@@ -125,7 +145,10 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
 
     // Oklch operations.
     ok.xy *= float2(_Luminance, _Chrominance); // Multiply Oklch's lc, but preserve h.
+    ok.z += (_LChHue / 180.0) * 6.3;
+    
     ok = LChToLab(ok);
+    
 
     // Oklab operations.
     ok.yz *= _OklabAB;
@@ -140,6 +163,8 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
     // Oklab to SRGB.
     float3 okhsv = SRGBToOkhsv(OklabToSRGB(ok));
     okhsv.yz *= float2(_Saturation,_Vibrance);
+    okhsv.x += _OkhsvHue / 180.0;
+    
     color = OkhsvToSRGB(okhsv);
 #   endif
 
@@ -155,3 +180,5 @@ technique Okcolor < ui_label = "Ok color spaces."; >
 {
     __pass(PS_Okcolor, PostProcessVS)
 }
+
+// END OF FILE.

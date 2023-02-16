@@ -105,3 +105,5 @@ float RemoveToe(float x)
     float k_3 = (1.f + k_1) / (1.f + k_2);
     return (x * x + k_1 * x) / (k_3 * (x + k_2));
 }
+
+// END OF FILE.

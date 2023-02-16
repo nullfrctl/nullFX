@@ -395,3 +395,5 @@ float3 GamutClip(in float3 srgb, in int mode, in float alpha)
     // else return srgb.
     return srgb;
 }
+
+// END OF FILE.
