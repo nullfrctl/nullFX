@@ -134,7 +134,7 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
 
-    // SRGB to Oklab.
+    // SRGB to Oklab. The variable is called ok because we both store Oklab and Oklch values in it.
     float3 ok = SRGBToOklch(color);
 
     // Apply toe to apply luminance changing operations using CIEL*ab-like luminance estimation.
@@ -149,7 +149,6 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
     
     ok = LChToLab(ok);
     
-
     // Oklab operations.
     ok.yz *= _OklabAB;
 
@@ -169,7 +168,6 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
 #   endif
 
 #   if OK_GAMUT_CLIPPING_ENABLE
-    // Clip.
     color = GamutClip(color, _GamutClippingMode, _GamutClippingAlpha);
 #   endif
 

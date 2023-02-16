@@ -2,7 +2,7 @@
 
 /* nullFX/Color spaces: Oklab */
 
-// Used: cbrt(), pow3().
+// Used: cbrt(), pow3(), pow2().
 #include "intrinsics.fxh"
 
 // Convert SRGB to "LMS" values.
@@ -65,7 +65,7 @@ float3 OklabToSRGB(in float3 oklab)
 float3 LabToLCh(in float3 lab)
 {
     float C = sqrt(pow2(lab.y) + pow2(lab.z)); // sqrt(a^2 + b^2)
-    C = clamp(C, 0.0, 0.4) // C will not exceed 0.4.
+    C = clamp(C, 0.0, 0.4); // C will not exceed 0.4.
     float h = atan2(lab.z, lab.y); // atan(b/a)
 
     // L,C,h.
