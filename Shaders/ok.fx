@@ -157,10 +157,12 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
     {
         ok.x = RemoveToe(ok.x);
     }
+    
+    color = OklabToSRGB(ok);
 
 #   if OK_OKHSV_CORRECTION_ENABLE
     // Oklab to SRGB.
-    float3 okhsv = SRGBToOkhsv(OklabToSRGB(ok));
+    float3 okhsv = SRGBToOkhsv(color);
     okhsv.yz *= float2(_Saturation,_Vibrance);
     okhsv.x += _OkhsvHue / 180.0;
     
