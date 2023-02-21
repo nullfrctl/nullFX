@@ -82,20 +82,20 @@ float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : 
         oklab.x = ApplyToe(oklab.x);
     }
 
-    // No if-statements here, we have those further down.
-    float x = oklab.x;
+    // Apply the sigmoid to the luminance channel.
+    {
+        float x = ApplyContrast(oklab.x)
+	    oklab.x = lerp(oklab.x, x, _Contrast);
+    }
 
-    // Monster.
-    
-
-	oklab.x = lerp(oklab.x, x, _Contrast);
-
+    // Remove Lr toe.
     if (_ApplyToe)
     {
         oklab.x = RemoveToe(oklab.x);
     }
 
-    color = OklchToSRGB(oklab);
+    // Go back to SRGB.
+    color = OklabToSRGB(oklab);
 
     return color;
 }

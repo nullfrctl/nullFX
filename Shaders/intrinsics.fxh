@@ -48,7 +48,7 @@ namespace nullFX
         SRGBTexture = true;
     };
 
-    static const float Pi = 3.141592653589793115997963468544185161590576171875; // Accurate Pi.
+    shared static const float Pi = 3.141592653589793115997963468544185161590576171875; // Accurate Pi.
 }
 
 #define __pass(PS, VS) \
