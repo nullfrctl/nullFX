@@ -84,7 +84,7 @@ float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : 
 
     // Apply the sigmoid to the luminance channel.
     {
-        float x = ApplyContrast(oklab.x)
+        float x = ApplyContrast(oklab.x);
 	    oklab.x = lerp(oklab.x, x, _Contrast);
     }
 
@@ -107,7 +107,7 @@ technique CurvesEnhanced <
                  "This shader is CeeJay.dk's \"Curves.fx\" converted to work with\n"
                  "the Oklab perceptual color space.\n"
                  "\n"
-                 "While the options are a bit reduced, the overall effect is subjectively enhanced."
+                 "While the options are a bit reduced, the overall effect is subjectively enhanced.";
 >
 {
     __pass(PS_CurvesEnhanced, PostProcessVS)
