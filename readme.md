@@ -1,3 +1,8 @@
-<h1 align="center">
+<div align="center">
   <img src="doc/logo.gif" alt="nullFX">
-</h1>
+  <br>
+  <h3>
+    Perceptual Effects
+  </h3>
+</div>
+<h1 />
