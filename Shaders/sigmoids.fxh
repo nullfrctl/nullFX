@@ -1,5 +1,12 @@
+/* nullFX: Sigmoids from SweetFX ported for general use. */
+
+// I generally just took the sigmoids from Curves.fx by CeeJay.dk and
+// generalized them for more purposes.
+
+// Used: nullFX::Pi, pow2(), __overload_float(MACRO).
 #include "intrinsics.fxh"
 
+// Use like Sigmoids::f(x).
 namespace Sigmoids
 {
     float Sine(in float x)
@@ -55,3 +62,5 @@ namespace Sigmoids
     }
     __overload_float(Parabola)
 }
+
+// END OF FILE.

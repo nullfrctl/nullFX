@@ -112,3 +112,5 @@ technique CurvesEnhanced <
 {
     __pass(PS_CurvesEnhanced, PostProcessVS)
 }
+
+// END OF FILE.

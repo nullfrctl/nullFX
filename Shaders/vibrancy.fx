@@ -103,3 +103,5 @@ technique Vibrancy < ui_label = "Vibrancy"; ui_label = "nullFX: Vibrancy."; >
 {
     __pass(PS_Vibrancy, PostProcessVS)
 }
+
+// END OF FILE.
