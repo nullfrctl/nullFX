@@ -2,6 +2,13 @@
 
 /* nullFX/Color spaces: Oklab */
 
+// This are functions for converting in and out of the Oklab color space
+// by Bjorn Ottonson.
+//
+// Resources used:
+// https://www.w3.org/TR/css-color-4/
+// https://bottosson.github.io/posts/oklab/
+
 // Used: cbrt(), pow3().
 #include "intrinsics.fxh"
 
@@ -27,6 +34,9 @@ float3 SRGBToOklab(in float3 srgb)
     
     // Again, column-major assumption.
     float3 oklab = mul(lms_to_oklab, lms);
+    
+    // Clamp to Oklab range.
+	oklab = clamp(oklab, float3(0.0, -1.25, -1.25), float3(1.0, 1.25, 1.25));
 
     return oklab;
 }
@@ -45,6 +55,9 @@ static const float3x3 lms_to_srgb = float3x3(
 
 float3 OklabToSRGB(in float3 oklab)
 {
+	// Clamp to normal range.
+	oklab = clamp(oklab, float3(0.0, -1.25, -1.25), float3(1.0, 1.25, 1.25));
+
     // Convert our Oklab values back to LMS. 
     // Since in the original math there is no multiplication done on the L channel, 
     // we just set it to 1.0.
@@ -60,8 +73,14 @@ float3 OklabToSRGB(in float3 oklab)
 // Generic Lab to LCh function.
 float3 LabToLCh(in float3 lab)
 {
+	// Clamp input Lab to Lab color space maximums.
+	lab = clamp(lab, float3(0.0, -1.25, -1.25), float3(1.0, 1.25, 1.25));
+
     float C = sqrt(pow2(lab.y) + pow2(lab.z)); // sqrt(a^2 + b^2)
     float h = atan2(lab.z, lab.y); // atan(b/a)
+    
+    // Clamp C to normal range.
+    C = clamp(C, -0.4, +0.4);
 
     // L,C,h.
     return float3(lab.x, C, h);
@@ -70,8 +89,15 @@ float3 LabToLCh(in float3 lab)
 // Generic LCh to Lab function.
 float3 LChToLab(in float3 lch)
 {
+	// Clamp L and C to LCh range.
+	lch.xy = clamp(lch.xy, float2(0.0, -0.4), float2(1.0, 0.4));
+
     float a = lch.y * cos(lch.z); // C * cos(h);
     float b = lch.y * sin(lch.z); // C * sin(h);
+
+	// Make sure output a and b are in nominal range.
+	a = clamp(a, -0.4, 0.4);
+	b = clamp(b, -0.4, 0.4);
 
     // L,a,b.
     return float3(lch.x, a, b);

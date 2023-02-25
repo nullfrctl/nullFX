@@ -259,6 +259,8 @@ float3 GamutClip_ProjectToLcusp(float3 rgb)
 
 float3 AdaptiveGamutClip_L0_05(float3 rgb, float alpha)
 {
+	alpha = min(0.0, alpha);
+
     if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
         return rgb;
 
@@ -283,6 +285,8 @@ float3 AdaptiveGamutClip_L0_05(float3 rgb, float alpha)
 
 float3 AdaptiveGamutClip_L0_Lcusp(float3 rgb, float alpha)
 {
+	alpha = min(0.0, alpha);
+
     if (rgb.r < 1.f && rgb.g < 1.f && rgb.b < 1.f && rgb.r > 0.f && rgb.g > 0.f && rgb.b > 0.f)
         return rgb;
 
@@ -376,6 +380,9 @@ float3 GetCs(float L, float a_, float b_)
 
 float3 GamutClip(in float3 srgb, in int mode, in float alpha)
 {
+	// Limit to 0.0, +inf instead of -inf, +inf.
+	alpha = min(0.0, alpha);
+
     switch (mode)
     {
     case 0:
