@@ -40,7 +40,7 @@ uniform int _ContrastFormula < __UNIFORM_COMBO_INT1
 uniform float _Contrast < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Contrast / Lerpfact";
     ui_tooltip = "The amount of contrast to apply.";
-    ui_min = 0.0;
+    ui_min = -1.0;
     ui_max = 1.0;
 > = 0.5;
 
