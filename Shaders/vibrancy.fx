@@ -83,7 +83,7 @@ float3 PS_Vibrancy(in float4 position : SV_Position, in float2 texcoord : TEXCOO
     	float3 oklch = SRGBToOklch(color);
 		
 		// Get absolute of vibrancy to stop cheaters.
-		float vib = abs(_Vibrancy) + nullFX::FP16Scale; // Add FP16Scale so no div. by 0.
+		float vib = abs(_Vibrancy) + nullFX::FP32Min; // Add FP32Min so no div. by 0.
 		
 		float lerpfact = oklch.y * 2.5; // equiv. C/0.4 to get [0.0,1.0]
         oklch.y = lerp(oklch.y * vib, oklch.y / vib, lerpfact);
