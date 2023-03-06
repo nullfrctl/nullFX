@@ -9,7 +9,7 @@
 
 // Use gamut re-mapping/clipping.
 #ifndef OK_GAMUT_CLIPPING_ENABLE
-#	define OK_GAMUT_CLIPPING_ENABLE 1
+#	define OK_GAMUT_CLIPPING_ENABLE 0
 #endif
 
 // Enable color alteration using Okhsv.
@@ -147,6 +147,10 @@ float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOOR
     ok.xy *= float2(_Luminance, _Chrominance); // Multiply Oklch's lc, but preserve h.
     ok.z += (_LChHue / 180.0) * 6.3;
     
+    // Clamp to normal range.
+    ok.x = saturate(ok.x);
+    ok.y = clamp(ok.y, 0.0, 0.4);
+   
     ok = LChToLab(ok);
     
     // Oklab operations.
