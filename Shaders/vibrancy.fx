@@ -25,6 +25,11 @@
 #   define VIB_GAMUT_CLIPPING_ENABLE 0
 #endif
 
+uniform bool _Sigmoid <
+    ui_label = "Contrast";
+    ui_tooltip = "Apply sigmoid to lerpfact to get more vibrancy contrast.";
+> = true;
+
 uniform float _Vibrancy <__UNIFORM_DRAG_FLOAT1
     ui_label = "Vibrancy";
     ui_tooltip = "Values below 1.0 de-saturate low chrominance colors and\n"
@@ -86,7 +91,14 @@ float3 PS_Vibrancy(in float4 position : SV_Position, in float2 texcoord : TEXCOO
 		float vib = abs(_Vibrancy) + nullFX::FP32Min; // Add FP32Min so no div. by 0.
 		
 		float lerpfact = oklch.y * 2.5; // equiv. C/0.4 to get [0.0,1.0]
+
+        if (_Sigmoid)
+        {
+            lerpfact = smoothstep(0.0, 1.0, lerpfact); // Apply sigmoid for more contrast.
+        }
+
         oklch.y = lerp(oklch.y * vib, oklch.y / vib, lerpfact);
+        oklch.y = clamp(oklch.y, 0.0, 0.4); // clamp to normal range.
 		
     	color = OklchToSRGB(oklch);
     }
