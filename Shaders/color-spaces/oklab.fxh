@@ -64,25 +64,8 @@ float3 OklabToSRGB(in float3 oklab)
     return srgb;
 }
 
-// Generic Lab to LCh function.
-float3 LabToLCh(in float3 lab)
-{
-    float C = length(lab.yz); // sqrt(a^2 + b^2)
-    float h = atan2(lab.z, lab.y); // atan(b/a)
-
-    // L,C,h.
-    return float3(lab.x, C, h);
-}
-
-// Generic LCh to Lab function.
-float3 LChToLab(in float3 lch)
-{
-    float a = lch.y * cos(lch.z); // C * cos(h);
-    float b = lch.y * sin(lch.z); // C * sin(h);
-
-    // L,a,b.
-    return float3(lch.x, a, b);
-}
+// Used: LabToLCh(), LChToLab().
+#include "lch.fxh"
 
 // These are essentially shortcuts.
 float3 SRGBToOklch(in float3 srgb)

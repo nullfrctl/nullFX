@@ -42,6 +42,7 @@ namespace nullFX
     static const float Pi = 3.14159274101257324; // Pi to the closest a 32-bit float can be close to Pi. . .
     static const float FP16Min = 6.10 * 10e-5; // Smallest (normal) 16-bit floating-point number (represented as a 32-bit float, but such is ReShade).
     static const float FP32Min = 1.1754943508 * 10e-38; // Smallest (normal) 32-bit floating-point number.
+    static const float3 SRGBCoefficients = float3(0.2126, 0.7152, 0.0722);
 }
 
 // shortcut to x*x / x^2
