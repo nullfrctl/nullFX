@@ -91,4 +91,5 @@ technique Levels < ui_label = "Levels."; >
     __pass(PS_Levels, PostProcessVS)
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

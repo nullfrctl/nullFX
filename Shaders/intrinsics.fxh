@@ -68,4 +68,5 @@ float cbrt(in float x)
 }
 __overload_float(cbrt);
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

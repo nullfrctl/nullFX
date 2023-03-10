@@ -39,4 +39,5 @@ float3 LChToLuv(in float3 lch)
     return float3(lch.x, u, v);
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

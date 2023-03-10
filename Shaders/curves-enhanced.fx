@@ -113,4 +113,5 @@ technique CurvesEnhanced <
     __pass(PS_CurvesEnhanced, PostProcessVS)
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

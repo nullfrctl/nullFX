@@ -195,4 +195,5 @@ float3 SRGBToOkhsv(float3 rgb)
     return float3 (h, s, v );
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

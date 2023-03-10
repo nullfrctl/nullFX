@@ -95,4 +95,5 @@ float RemoveToe(float x)
     return (x * x + k_1 * x) / (k_3 * (x + k_2));
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

@@ -63,4 +63,5 @@ namespace Sigmoids
     __overload_float(Parabola)
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

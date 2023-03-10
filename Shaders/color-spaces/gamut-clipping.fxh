@@ -403,4 +403,5 @@ float3 GamutClip(in float3 srgb, in int mode, in float alpha)
     return srgb;
 }
 
+// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.
