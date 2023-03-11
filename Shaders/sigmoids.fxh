@@ -11,7 +11,7 @@ namespace Sigmoids
 {
     float Sine(in float x)
     {
-        x = sin(nullFX::Pi * 0.5 * x);
+        x = sin(_PI * 0.5 * x);
         return pow2(x);
     }
     __overload_float(Sine)

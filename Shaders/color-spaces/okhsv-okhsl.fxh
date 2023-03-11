@@ -24,8 +24,8 @@ float3 OkhslToSRGB(float3 hsl)
         return float3( 0.f, 0.f, 0.f );
     }
 
-    float a_ = cos(2.f * nullFX::Pi * h);
-    float b_ = sin(2.f * nullFX::Pi * h);
+    float a_ = cos(2.f * _PI * h);
+    float b_ = sin(2.f * _PI * h);
     float L = RemoveToe(l);
 
     float3 cs = GetCs(L, a_, b_);
@@ -71,7 +71,7 @@ float3 SRGBToOkhsl(float3 rgb)
     float b_ = lab.z / C;
 
     float L = lab.x;
-    float h = 0.5f + 0.5f * atan2(-lab.z, -lab.y) / nullFX::Pi;
+    float h = 0.5f + 0.5f * atan2(-lab.z, -lab.y) / _PI;
 
     float3 cs = GetCs(L, a_, b_);
     float C_0 = cs.x;
@@ -113,8 +113,8 @@ float3 OkhsvToSRGB(float3 hsv)
     float s = hsv.y;
     float v = hsv.z;
 
-    float a_ = cos(2.f * nullFX::Pi * h);
-    float b_ = sin(2.f * nullFX::Pi * h);
+    float a_ = cos(2.f * _PI * h);
+    float b_ = sin(2.f * _PI * h);
     
     float2 cusp = FindCusp(a_, b_);
     float2 ST_max = ToST(cusp);
@@ -159,7 +159,7 @@ float3 SRGBToOkhsv(float3 rgb)
     float b_ = lab.z / C;
 
     float L = lab.x;
-    float h = 0.5f + 0.5f * atan2(-lab.z, -lab.y) / nullFX::Pi;
+    float h = 0.5f + 0.5f * atan2(-lab.z, -lab.y) / _PI;
 
     float2 cusp = FindCusp(a_, b_);
     float2 ST_max = ToST(cusp);

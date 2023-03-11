@@ -21,6 +21,18 @@ uniform bool _ApplyToe <
     ui_tooltip = "This allows CIE-L*-like luminance estimate.";
 > = true;
 
+uniform int _ContrastMode < __UNIFORM_COMBO_INT1
+    ui_label = "Mode";
+    ui_tooltip = "Positive chrominance will desaturate the image, while\n"
+                 "Negative chrominance will saturate the image.\n"
+                 "\n"
+                 "Negative chrominance will mimic Curves.fx behavior.";
+    ui_items = "Luminance\0"
+               "Chrominance\0"
+               "Luminance and Chrominance    [Neg. C Contrast]\0"
+               "Luminance and Chrominance    [Pos. C Contrast]\0";
+> = 0;
+
 uniform int _ContrastFormula < __UNIFORM_COMBO_INT1
     ui_label = "Formula / Sigmoid Function";
     ui_tooltip = "What sigmoid to apply to the selected channels?\n"
@@ -74,28 +86,43 @@ float ApplyContrast(in float x)
 float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
-    float3 oklab = SRGBToOklab(color);
+    float3 oklch = SRGBToOklch(color);
 
     // Lr toe.
     if (_ApplyToe)
+        oklch.x = ApplyToe(oklch.x);
+    
+    switch (_ContrastMode)
     {
-        oklab.x = ApplyToe(oklab.x);
-    }
-
-    // Apply the sigmoid to the luminance channel.
-    {
-        float x = ApplyContrast(oklab.x);
-	    oklab.x = lerp(oklab.x, x, _Contrast);
+    default:
+        float l = ApplyContrast(oklch.x);
+        oklch.x = lerp(oklch.x, l, _Contrast);
+        break;
+    case 1:
+        float c = ApplyContrast(oklch.y);
+        oklch.y = lerp(oklch.y, c, -_Contrast);
+        break;
+    case 2:
+        float2 lc_pos = oklch.xy;
+        lc_pos.x = ApplyContrast(lc_pos.x);
+        lc_pos.y = ApplyContrast(lc_pos.y);
+        oklch.xy = lerp(oklch.xy, lc_pos, float2(_Contrast, -_Contrast));
+        break;
+    case 3:
+        float2 lc_neg = oklch.xy;
+        lc_neg.x = ApplyContrast(lc_neg.x);
+        lc_neg.y = ApplyContrast(lc_neg.y);
+        oklch.xy = lerp(oklch.xy, lc_neg, _Contrast);
+        break;
     }
 
     // Remove Lr toe.
     if (_ApplyToe)
-    {
-        oklab.x = RemoveToe(oklab.x);
-    }
+        oklch.x = RemoveToe(oklch.x);
 
     // Go back to SRGB.
-    color = OklabToSRGB(oklab);
+    color = OklchToSRGB(oklch);
+    color = revert_nan(color, texcoord);
 
     return color;
 }

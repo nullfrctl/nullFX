@@ -27,6 +27,7 @@ float4 f(in float4 x) { return float4(f(x.xy), f(x.zw)); } \
 #define __overload_float3(f) \
 float4 f(in float4 x) { return float4(f(x.xyz), f(x.www).x)}
 
+#define _PI 3.14159265358979323846
 
 // nullFX-specific.
 namespace nullFX
@@ -39,34 +40,25 @@ namespace nullFX
         SRGBTexture = true;
     };
 
-    static const float Pi = 3.14159274101257324; // Pi to the closest a 32-bit float can be close to Pi. . .
-    static const float FP16Min = 6.10 * 10e-5; // Smallest (normal) 16-bit floating-point number (represented as a 32-bit float, but such is ReShade).
     static const float FP32Min = 1.1754943508 * 10e-38; // Smallest (normal) 32-bit floating-point number.
     static const float3 SRGBCoefficients = float3(0.2126, 0.7152, 0.0722);
 }
 
 // shortcut to x*x / x^2
-float pow2(in float x)
-{
-    return x * x;
-}
-__overload_float(pow2);
+#define pow2(x) (x * x)
 
-// shortcut to x*x*x / x^3
-float pow3(in float x)
-{
-    return x * x * x;
-}
-__overload_float(pow3);
+// Use preprocessor to allow constant folding, etc.
+#define pow3(x) (x * x * x)
 
 // cube root: avoids division by zero.
-float cbrt(in float x) 
-{ 
-    float y = sign(x) * pow(abs(x), 0.333333343267440796); // Use 32-bit one-third to save division cycles.
+float cbrt(in float x)
+{
+    static const float one_third = (1.0 / 3.0);
+    float y = sign(x) * pow(abs(x), one_third);
 
     return y;
 }
-__overload_float(cbrt);
+__overload_float(cbrt)
 
 // vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

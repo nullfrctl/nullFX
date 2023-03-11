@@ -19,33 +19,37 @@ uniform float _BlackPointIn < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Black Point [IN]";
     __ui_category("Levels in.");
     ui_min = 0.0;
-    ui_max = 1.0;
+    ui_max = 255.0;
+    ui_step = 1.0;
 > = 0.0;
 
 uniform float _WhitePointIn < __UNIFORM_SLIDER_FLOAT1
     ui_label = "White Point [IN]";
     __ui_category("Levels in.");
     ui_min = 0.0;
-    ui_max = 1.0;
-> = 1.0;
+    ui_max = 255.0;
+    ui_step = 1.0;
+> = 255.0;
 
 uniform float _BlackPointOut < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Black Point [OUT]";
     __ui_category("Levels out.");
     ui_min = 0.0;
-    ui_max = 1.0;
+    ui_max = 255.0;
+    ui_step = 1.0;
 > = 0.0;
 
 uniform float _WhitePointOut < __UNIFORM_SLIDER_FLOAT1
     ui_label = "White Point [OUT]";
     __ui_category("Levels out.");
     ui_min = 0.0;
-    ui_max = 1.0;
-> = 1.0;
+    ui_max = 255.0;
+    ui_step = 1.0;
+> = 255.0;
 
 float ApplyLevelsIn(in float x, in float black_in, in float white_in)
 {
-    x = saturate(x - black_in) / max(white_in - black_in, nullFX::FP32Min);
+    x = saturate(x - black_in) / min(1.0, white_in - black_in + nullFX::FP32Min);
     return x;
 }
 
@@ -59,29 +63,25 @@ float3 PS_Levels(in float4 position : SV_Position, in float2 texcoord : TEXCOORD
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
 
-    {
-        // Convert to Oklab.
-        float3 oklab = SRGBToOklab(color);
+    // Convert to Oklab.
+    float3 oklab = SRGBToOklab(color);
 
-        // Lr toe.
-        if (_ApplyToe)
-        {
-            oklab.x = ApplyToe(oklab.x);
-        }
+    // Lr toe.
+    if (_ApplyToe)
+        oklab.x = ApplyToe(oklab.x);
+    
+    static const float rcp_255 = (1.0 / 255.0); // constant to not waste division cycles.
 
-        // Apply levels.
-        oklab.x = ApplyLevelsIn(oklab.x, _BlackPointIn, _WhitePointIn);
-        oklab.x = ApplyLevelsOut(oklab.x, _BlackPointOut, _WhitePointOut);
+    // Apply levels.
+    oklab.x = ApplyLevelsIn(oklab.x, _BlackPointIn * rcp_255, _WhitePointIn * rcp_255);
+    oklab.x = ApplyLevelsOut(oklab.x, _BlackPointOut * rcp_255, _WhitePointOut * rcp_255);
 
-        // Remove Lr toe.
-        if (_ApplyToe)
-        {
-            oklab.x = RemoveToe(oklab.x);
-        }
+    // Remove Lr toe.
+    if (_ApplyToe)
+        oklab.x = RemoveToe(oklab.x);
 
-        // Go back to SRGB.
-        color = OklabToSRGB(oklab);
-    }
+    // Go back to SRGB.
+    color = OklabToSRGB(oklab);
 
     return color;
 }

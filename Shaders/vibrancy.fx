@@ -71,8 +71,8 @@ uniform float _GamutClippingAlpha < __UNIFORM_DRAG_FLOAT1
                  "\n"
                  "This only applies for gamut clipping modes marked adaptive, otherwise\n"
                  "they have no effect\n"
-				 "\n"
-				 "Alpha can be used to accentuate the effects of the gamut clipping.";
+                 "\n"
+                 "Alpha can be used to accentuate the effects of the gamut clipping.";
     ui_min = 1.0;
     ui_step = 0.1;
     __ui_category("Gamut clipping.");
@@ -82,30 +82,24 @@ uniform float _GamutClippingAlpha < __UNIFORM_DRAG_FLOAT1
 float3 PS_Vibrancy(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
-  
-	// We don't access oklch outside of this scope.  
-    {
-    	float3 oklch = SRGBToOklch(color);
-		
-		// Get absolute of vibrancy to stop cheaters.
-		float vib = abs(_Vibrancy) + nullFX::FP32Min; // Add FP32Min so no div. by 0.
-		
-		float lerpfact = oklch.y * 2.5; // equiv. C/0.4 to get [0.0,1.0]
+    float3 oklch = SRGBToOklch(color);
+    
+    // Get absolute of vibrancy to stop cheaters.
+    float vib = abs(_Vibrancy) + nullFX::FP32Min; // Add FP32Min so no div. by 0.
+    
+    float lerpfact = oklch.y * 2.5; // equiv. C/0.4 to get [0.0,1.0]
 
-        if (_Sigmoid)
-        {
-            lerpfact = smoothstep(0.0, 1.0, lerpfact); // Apply sigmoid for more contrast.
-        }
+    if (_Sigmoid)
+        lerpfact = smoothstep(0.0, 1.0, lerpfact); // Apply sigmoid for more contrast.
 
-        oklch.y = lerp(oklch.y * vib, oklch.y / vib, lerpfact);
-        oklch.y = clamp(oklch.y, 0.0, 0.4); // clamp to normal range.
-		
-    	color = OklchToSRGB(oklch);
-    }
+    oklch.y = lerp(oklch.y * vib, oklch.y / vib, lerpfact);
+    oklch.y = clamp(oklch.y, 0.0, 0.4); // clamp to normal range.
+    
+    color = OklchToSRGB(oklch);
 
 #   if VIB_GAMUT_CLIPPING_ENABLE
     // Clip.
-	color = GamutClip(color, _GamutClippingMode, _GamutClippingAlpha);
+    color = GamutClip(color, _GamutClippingMode, _GamutClippingAlpha);
 #   endif
 
     return color;
