@@ -122,7 +122,6 @@ float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : 
 
     // Go back to SRGB.
     color = OklchToSRGB(oklch);
-    color = revert_nan(color, texcoord);
 
     return color;
 }
