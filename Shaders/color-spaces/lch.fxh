@@ -1,12 +1,14 @@
 #pragma once
 
+#include "intrinsics.fxh"
+
 /* nullFX/Color spaces: LCh */
 
 // Generic Lab to LCh(ab) function.
 float3 LabToLCh(in float3 lab)
 {
     float C = length(lab.yz); // sqrt(a^2 + b^2)
-    float h = atan2(lab.z, lab.y); // atan(b/a)
+    float h = C < 1e-7 ? 0 : atan3(lab.z, lab.y);
 
     // L,C,h.
     return float3(lab.x, C, h);
