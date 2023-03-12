@@ -1,21 +1,12 @@
-/* nullFX: "Curves Enhanced" */
+// SPDX-License-Identifier: Unlicense
 
-// This shader is in essence CeeJay.dk's Curves.fx shader made to use
-// Oklch instead of SRGB-calculated chrominance and luminance values.
-
-// Used: nullFX::BackBuffer, __pass(MACRO).
-#include "intrinsics.fxh"
-
-// Used: PostProcessVS()
 #include "ReShade.fxh"
 #include "ReShadeUI.fxh"
-
-// Used: SRGBToOklab(), OklabToSRGB(), ApplyToe(), RemoveToe().
 #include "color-spaces/oklab.fxh"
-
-// Used: all functions.
+#include "intrinsics.fxh"
 #include "sigmoids.fxh"
 
+// clang-format off
 uniform bool _ApplyToe <
     ui_label = "Apply Lr Toe";
     ui_tooltip = "This allows CIE-L*-like luminance estimate.";
@@ -55,6 +46,7 @@ uniform float _Contrast < __UNIFORM_SLIDER_FLOAT1
     ui_min = -1.0;
     ui_max = 1.0;
 > = 0.5;
+// clang-format on
 
 float ApplyContrast(in float x)
 {
@@ -88,10 +80,9 @@ float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : 
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
     float3 oklch = SRGBToOklch(color);
 
-    // Lr toe.
     if (_ApplyToe)
         oklch.x = ApplyToe(oklch.x);
-    
+
     switch (_ContrastMode)
     {
     default:
@@ -116,28 +107,28 @@ float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : 
         break;
     }
 
-    // Remove Lr toe.
     if (_ApplyToe)
         oklch.x = RemoveToe(oklch.x);
 
-    // Go back to SRGB.
     color = OklchToSRGB(oklch);
-
     return color;
 }
 
-technique CurvesEnhanced < 
-    ui_label = "Curves enhanced."; 
-    ui_tooltip = "nullFX: Curves enhanced.\n"
-                 "\n"
-                 "This shader is CeeJay.dk's \"Curves.fx\" converted to work with\n"
-                 "the Oklab perceptual color space.\n"
-                 "\n"
-                 "While the options are a bit reduced, the overall effect is subjectively enhanced.";
+technique CurvesEnhanced < ui_label = "Curves enhanced.";
+ui_tooltip = "nullFX: Curves enhanced.\n"
+             "\n"
+             "This shader is CeeJay.dk's \"Curves.fx\" converted to work with\n"
+             "the Oklab perceptual color space.\n"
+             "\n"
+             "While the options are a bit reduced, the overall effect is subjectively enhanced.";
 >
 {
-    __pass(PS_CurvesEnhanced, PostProcessVS)
+    pass
+    {
+        PixelShader = PS_CurvesEnhanced;
+        VertexShader = PostProcessVS;
+        SRGBWriteEnable = true;
+    }
 }
 
-// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.

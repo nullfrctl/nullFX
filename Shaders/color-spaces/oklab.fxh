@@ -1,42 +1,21 @@
 #pragma once
 
-/* nullFX/Color spaces: Oklab */
+// SPDX-License-Identifier: Unlicense
 
-// This are functions for converting in and out of the Oklab color space
-// by Bjorn Ottonson.
-//
-// Resources used:
-// https://www.w3.org/TR/css-color-4/
-// https://bottosson.github.io/posts/oklab/
-
-// Used: cbrt(), pow3().
 #include "intrinsics.fxh"
 
-// Convert SRGB to "LMS" values.
+// clang-format off
 static const float3x3 srgb_to_lms = float3x3(
     0.4122214708, 0.5363325363, 0.0514459929,
     0.2119034982, 0.6806995451, 0.1073969566,
     0.0883024619, 0.2817188376, 0.6299787005
 );
 
-// Convert "LMS" values to Oklab color.
 static const float3x3 lms_to_oklab = float3x3(
     +0.2104542553, +0.7936177850, -0.0040720468,
     +1.9779984951, -2.4285922050, +0.4505937099,
     +0.0259040371, +0.7827717662, -0.8086757660
 );
-
-float3 SRGBToOklab(in float3 srgb)
-{
-    // HLSL assumes column-major when using float3, so this multiplication is optimzied.
-    float3 lms = mul(srgb_to_lms, srgb);
-    lms = cbrt(lms); // Apply Oklab non-linearity.
-    
-    // Again, column-major assumption.
-    float3 oklab = mul(lms_to_oklab, lms);
-
-    return oklab;
-}
 
 static const float3x3 oklab_to_lms = float3x3(
     +1.0000000000, +0.3963377774, +0.2158037573,
@@ -49,25 +28,30 @@ static const float3x3 lms_to_srgb = float3x3(
     -1.2684380046, +2.6097574011, -0.3413193965,
     -0.0041960863, -0.7034186147, +1.7076147010
 );
+// clang-format on
+
+float3 SRGBToOklab(in float3 srgb)
+{
+    float3 lms = mul(srgb_to_lms, srgb);
+    lms = cbrt(lms);
+
+    float3 oklab = mul(lms_to_oklab, lms);
+
+    return oklab;
+}
 
 float3 OklabToSRGB(in float3 oklab)
 {
-    // Convert our Oklab values back to LMS. 
-    // Since in the original math there is no multiplication done on the L channel, 
-    // we just set it to 1.0.
     float3 lms = mul(oklab_to_lms, oklab);
-    lms = pow3(lms); // Reverse Oklab curve.
+    lms = pow3(lms);
 
-    // Convert "LMS" values to SRGB
     float3 srgb = mul(lms_to_srgb, lms);
 
     return srgb;
 }
 
-// Used: LabToLCh(), LChToLab().
 #include "lch.fxh"
 
-// These are essentially shortcuts.
 float3 SRGBToOklch(in float3 srgb)
 {
     return LabToLCh(SRGBToOklab(srgb));
@@ -78,7 +62,6 @@ float3 OklchToSRGB(in float3 oklch)
     return OklabToSRGB(LChToLab(oklch));
 }
 
-// Lr toe.
 float ApplyToe(float x)
 {
     float k_1 = 0.206f;
@@ -95,5 +78,4 @@ float RemoveToe(float x)
     return (x * x + k_1 * x) / (k_3 * (x + k_2));
 }
 
-// vim :set ts=4 sw=4 sts=4 et:
 // END OF FILE.
