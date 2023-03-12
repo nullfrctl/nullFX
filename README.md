@@ -1,2 +1,2 @@
-![nullFX](doc/logo.gif)
+![nullFX](docs/logo.gif)
 
