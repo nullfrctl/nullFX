@@ -1,1 +1,2 @@
-# ![nullFX](doc/logo.gif)
+![nullFX](doc/logo.gif)
+
