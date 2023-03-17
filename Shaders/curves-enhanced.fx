@@ -55,18 +55,25 @@ float ApplyContrast(in float x)
     {
     default: // Sine (default).
         return Sigmoids::Sine(x);
+
     case 1: // Abs split.
         return Sigmoids::AbsSplit(x);
+
     case 2: // Smoothstep.
         return Sigmoids::Smoothstep(x);
+
     case 3: // Exp.
         return Sigmoids::Exp(x);
+
     case 4: // Catmull-Rom.
         return Sigmoids::CatmullRom(x);
+
     case 5: // Smootherstep.
         return Sigmoids::Smootherstep(x);
+
     case 6: // Abs add.
         return Sigmoids::AbsAdd(x);
+
     case 7: // Parabola.
         return Sigmoids::Parabola(x);
     }
@@ -83,27 +90,26 @@ float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : 
     if (_ApplyToe)
         oklch.x = ApplyToe(oklch.x);
 
+    float2 lc = oklch.xy;
+    lc.x = ApplyContrast(lc.x);
+    lc.y = ApplyContrast(lc.y);
+
     switch (_ContrastMode)
     {
     default:
-        float l = ApplyContrast(oklch.x);
-        oklch.x = lerp(oklch.x, l, _Contrast);
+        oklch.x = lerp(oklch.x, lc.x, _Contrast);
         break;
-    case 1:
-        float c = ApplyContrast(oklch.y);
-        oklch.y = lerp(oklch.y, c, -_Contrast);
+
+    case 1: // Used negative contrast to match Curves.fx.
+        oklch.y = lerp(oklch.y, lc.y, -_Contrast);
         break;
+
     case 2:
-        float2 lc_pos = oklch.xy;
-        lc_pos.x = ApplyContrast(lc_pos.x);
-        lc_pos.y = ApplyContrast(lc_pos.y);
-        oklch.xy = lerp(oklch.xy, lc_pos, float2(_Contrast, -_Contrast));
+        oklch.xy = lerp(oklch.xy, lc, float2(_Contrast, -_Contrast));
         break;
+
     case 3:
-        float2 lc_neg = oklch.xy;
-        lc_neg.x = ApplyContrast(lc_neg.x);
-        lc_neg.y = ApplyContrast(lc_neg.y);
-        oklch.xy = lerp(oklch.xy, lc_neg, _Contrast);
+        oklch.xy = lerp(oklch.xy, lc, _Contrast);
         break;
     }
 
