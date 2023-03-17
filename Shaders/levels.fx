@@ -2,8 +2,8 @@
 
 #include "ReShade.fxh"
 #include "ReShadeUI.fxh"
-#include "color-spaces/oklab.fxh"
-#include "intrinsics.fxh"
+#include "include/color-spaces/oklab.fxh"
+#include "include/intrinsics.fxh"
 
 // clang-format off
 uniform bool _ApplyToe <

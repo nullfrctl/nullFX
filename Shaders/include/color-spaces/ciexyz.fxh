@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 #pragma once
 
-#include "intrinsics.fxh"
+#include "include/intrinsics.fxh"
 
 // clang-format off
 static const float3x3 srgb_to_cie_xyz = float3x3(

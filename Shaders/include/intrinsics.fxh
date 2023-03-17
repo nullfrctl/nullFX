@@ -58,10 +58,10 @@ sampler2D BackBuffer
 };
 
 // Smallest 32-bit normal number.
-const float FP32Min = 1.1754943508 * 10e-38;
+static const float FP32Min = 1.1754943508 * 10e-38;
 
 // Rec.709 luma coefficients.
-const float3 SRGBCoefficients = float3(0.2126, 0.7152, 0.0722);
+static const float3 SRGBCoefficients = float3(0.2126, 0.7152, 0.0722);
 } // namespace nullFX
 
 // vim: ts=4:sw=4:sts=4:et
