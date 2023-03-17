@@ -1,5 +1,4 @@
 #pragma once
-
 // SPDX-License-Identifier: Unlicense
 
 // Take a single-paramter float(1) function and expand it to use float2/3/4.
@@ -22,6 +21,8 @@
 // Use preprocessor to allow constant folding, etc.
 #define pow2(x) (x * x)
 #define pow3(x) (x * x * x)
+
+#define __c "\n\n"
 
 // cube root: avoids division by zero.
 float cbrt(in float x)

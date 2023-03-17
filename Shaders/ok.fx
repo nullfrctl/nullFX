@@ -9,7 +9,7 @@
 // clang-format off
 uniform bool _ApplyToe <
     ui_label = "Apply Lr Toe";
-    ui_category = "Oklab settings.";
+    ui_category = "Oklab settings." __c;
     ui_tooltip = "Apply Bjorn's Lr toe to the L channel to get a CIE-L*ab like lightness estimate.\n"
                  "\n"
                  "This could allow you to get a different style of luminance modification.";
@@ -18,7 +18,7 @@ uniform bool _ApplyToe <
 uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Luminance";
     ui_min = 0.0;
-    ui_category = "Oklab settings.";
+    ui_category = "Oklab settings." __c;
     ui_tooltip = "The \"brightness\" of a color that does not affect its perceived chroma vibrancy.";
     ui_spacing = 3;
 > = 1.0;
@@ -26,7 +26,7 @@ uniform float _Luminance < __UNIFORM_DRAG_FLOAT1
 uniform float _Chrominance < __UNIFORM_DRAG_FLOAT1
     ui_label = "Chrominance";
     ui_min = 0.0;
-    ui_category = "Oklab settings.";
+    ui_category = "Oklab settings." __c;
     ui_tooltip = "Non-uniform \"vibrance\" of a color. Different from saturation due to the\n"
                  "fact that it is non-uniform, but also means that perceived luminance does not\n"
                  "change.";
@@ -37,12 +37,12 @@ uniform float _LChHue < __UNIFORM_SLIDER_FLOAT1
     ui_min = -180.0;
     ui_max = 180.0;
     ui_step = 1.0;
-    ui_category = "Oklab settings.";
+    ui_category = "Oklab settings." __c;
 > = 0.0;
 
 uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
     ui_label = "Green-Red (a) & Blue-Yellow (b)";
-    ui_category = "Oklab settings.";
+    ui_category = "Oklab settings." __c;
     ui_spacing = 5;
 > = 1.0;
 // clang-format on

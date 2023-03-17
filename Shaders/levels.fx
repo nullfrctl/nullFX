@@ -13,7 +13,7 @@ uniform bool _ApplyToe <
 
 uniform float _BlackPointIn < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Black Point [IN]";
-    ui_category = "Levels in.";
+    ui_category = "Levels in." __c;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -21,7 +21,7 @@ uniform float _BlackPointIn < __UNIFORM_SLIDER_FLOAT1
 
 uniform float _WhitePointIn < __UNIFORM_SLIDER_FLOAT1
     ui_label = "White Point [IN]";
-    ui_category = "Levels in.";
+    ui_category = "Levels in." __c;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -29,7 +29,7 @@ uniform float _WhitePointIn < __UNIFORM_SLIDER_FLOAT1
 
 uniform float _BlackPointOut < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Black Point [OUT]";
-    ui_category = "Levels out.";
+    ui_category = "Levels out." __c;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -37,7 +37,7 @@ uniform float _BlackPointOut < __UNIFORM_SLIDER_FLOAT1
 
 uniform float _WhitePointOut < __UNIFORM_SLIDER_FLOAT1
     ui_label = "White Point [OUT]";
-    ui_category = "Levels out.";
+    ui_category = "Levels out." __c;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -56,7 +56,7 @@ float ApplyLevelsOut(in float x, in float black_out, in float white_out)
     return x;
 }
 
-float3 PS_Levels(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target
+float3 PS_Levels(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target 
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
     float3 oklab = SRGBToOklab(color);
@@ -85,4 +85,5 @@ technique Levels < ui_label = "Levels."; >
     }
 }
 
+// vim:ts=4:sw=4:sts=4:et
 // END OF FILE.
