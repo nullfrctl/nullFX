@@ -13,7 +13,7 @@ uniform bool _ApplyToe <
 
 uniform float _BlackPointIn < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Black Point [IN]";
-    ui_category = "Levels in." __c;
+    ui_category = "Levels in." NL;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -21,7 +21,7 @@ uniform float _BlackPointIn < __UNIFORM_SLIDER_FLOAT1
 
 uniform float _WhitePointIn < __UNIFORM_SLIDER_FLOAT1
     ui_label = "White Point [IN]";
-    ui_category = "Levels in." __c;
+    ui_category = "Levels in." NL;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -29,7 +29,7 @@ uniform float _WhitePointIn < __UNIFORM_SLIDER_FLOAT1
 
 uniform float _BlackPointOut < __UNIFORM_SLIDER_FLOAT1
     ui_label = "Black Point [OUT]";
-    ui_category = "Levels out." __c;
+    ui_category = "Levels out." NL;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;
@@ -37,7 +37,7 @@ uniform float _BlackPointOut < __UNIFORM_SLIDER_FLOAT1
 
 uniform float _WhitePointOut < __UNIFORM_SLIDER_FLOAT1
     ui_label = "White Point [OUT]";
-    ui_category = "Levels out." __c;
+    ui_category = "Levels out." NL;
     ui_min = 0.0;
     ui_max = 255.0;
     ui_step = 1.0;

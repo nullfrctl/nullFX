@@ -9,7 +9,7 @@
 #define pow3(x) (x * x * x)
 
 // Format for categories.
-#define __c "\n\n"
+#define NL "\n\n"
 
 // cube root: avoids division by zero.
 float cbrt(in float x)
