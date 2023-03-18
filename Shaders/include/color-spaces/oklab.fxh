@@ -35,7 +35,7 @@ static const float3x3 lms_to_srgb = float3x3(
 );
 
 // row-major matrix from thi.ng/color.
-static const float3x3 lms_to_xyz  = float3x3(
+static const float3x3 lms_to_ciexyz  = float3x3(
 	+1.22701385110352119, -0.04058017842328059, -0.0763812845057069,
 	-0.55779998065182220, +1.11225686961683020, -0.4214819784180127,
 	+0.28125614896646783, -0.07167667866560119, +1.5861632204407950
