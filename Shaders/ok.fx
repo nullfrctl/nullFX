@@ -46,7 +46,7 @@ uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
 > = 1.0;
 // clang-format on
 
-float3 PS_Okcolor(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target
+float3 PS_Okcolor(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
     float3 oklch = SRGBToOklch(color);

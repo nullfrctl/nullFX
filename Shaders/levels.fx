@@ -56,7 +56,7 @@ float ApplyLevelsOut(in float x, in float black_out, in float white_out)
     return x;
 }
 
-float3 PS_Levels(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target 
+float3 PS_Levels(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET 
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
     float3 oklab = SRGBToOklab(color);

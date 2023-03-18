@@ -82,7 +82,7 @@ float ApplyContrast(in float x)
     return x;
 }
 
-float3 PS_CurvesEnhanced(in float4 position : SV_Position, in float2 texcoord : TEXCOORD) : SV_Target
+float3 PS_CurvesEnhanced(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET
 {
     float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
     float3 oklch = SRGBToOklch(color);
