@@ -4,7 +4,7 @@
 #include "include/intrinsics.fxh"
 
 // clang-format off
-static const float3x3 srgb_to_cie_xyz = float3x3(
+static const float3x3 srgb_to_ciexyz = float3x3(
     0.4124, 0.3576, 0.1805,
     0.2126, 0.7152, 0.0722,
     0.0193, 0.1192, 0.9505
@@ -19,13 +19,13 @@ static const float3x3 cie_xyz_to_srgb = float3x3(
 
 float3 SRGBToXYZ(in float3 srgb)
 {
-    float3 xyz = mul(srgb_to_cie_xyz, srgb);
+    float3 xyz = mul(srgb_to_ciexyz, srgb);
     return xyz;
 }
 
-float3 XYZToSRGB(in float3 xyz)
+float3 XYZToSRGB(in float3 ciexyz)
 {
-    float3 srgb = mul(cie_xyz_to_srgb, xyz);
+    float3 srgb = mul(cie_xyz_to_srgb, ciexyz);
     return srgb;
 }
 
