@@ -5,15 +5,16 @@
 #include "include/intrinsics.fxh"
 
 static const float epsilon = (216.0 / 24389.0);
-static const float3 d65 = float3(95.047, 100.000, 108.883);
+static const float kappa = (24389.0 / 27.0);
+static const float3 d65 = float3(0.95047, 1.00000, 1.08883);
 
 float3 XYZToCIELAB(in float3 ciexyz, in float3 reference_white)
 {
     float3 xyz = ciexyz / reference_white;
 
-    xyz.x = xyz.x > epsilon ? cbrt(xyz.x) : (7.787 * xyz.x + 16.0 / 116.0);
-    xyz.y = xyz.y > epsilon ? cbrt(xyz.y) : (7.787 * xyz.y + 16.0 / 116.0);
-    xyz.z = xyz.z > epsilon ? cbrt(xyz.z) : (7.787 * xyz.z + 16.0 / 116.0);
+    xyz.x = xyz.x > epsilon ? cbrt(xyz.x) : (kappa * xyz.x + 16.0) / 116.0;
+    xyz.y = xyz.y > epsilon ? cbrt(xyz.y) : (kappa * xyz.y + 16.0) / 116.0;
+    xyz.z = xyz.z > epsilon ? cbrt(xyz.z) : (kappa * xyz.z + 16.0) / 116.0;
 
     float3 cielab;
     cielab.x = 116.0 * xyz.y - 16.0;
@@ -42,9 +43,9 @@ float3 CIELABToXYZ(in float3 cielab, in float3 reference_white)
 
     float3 xyz3 = pow3(xyz);
 
-    xyz.x = xyz3.x > epsilon ? xyz3.x : (xyz.x - 16.0 / 116.0) / 7.787;
-    xyz.y = xyz3.y > epsilon ? xyz3.y : (xyz.y - 16.0 / 116.0) / 7.787;
-    xyz.z = xyz3.z > epsilon ? xyz3.z : (xyz.z - 16.0 / 116.0) / 7.787;
+    xyz.x = xyz3.x > epsilon ? xyz3.x : (116.0 * xyz.x - 16.0) / kappa;
+    xyz.y = cielab.x > kappa * epsilon ? xyz3.y : cielab.x / kappa;
+    xyz.z = xyz3.z > epsilon ? xyz3.z : (116.0 * xyz.z - 16.0) / kappa;
 
     float3 ciexyz = xyz * reference_white;
     return ciexyz;
