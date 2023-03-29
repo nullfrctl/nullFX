@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 #pragma once
 
-#include "include/intrinsics.fxh"
+#include "include/global.fxh"
 
 float3 LabToLCh(in float3 lab)
 {
