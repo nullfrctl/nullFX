@@ -3,7 +3,7 @@
 #include "ReShade.fxh"
 #include "ReShadeUI.fxh"
 #include "include/color-spaces/oklab.fxh"
-#include "include/intrinsics.fxh"
+#include "include/global.fxh"
 #include "include/sigmoids.fxh"
 
 // clang-format off

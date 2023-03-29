@@ -8,7 +8,7 @@ It's like this because of the hacky removal of the __overload_float macro, which
 is surprisingly useful.
 */
 
-#include "intrinsics.fxh"
+#include "global.fxh"
 
 namespace Sigmoids
 {

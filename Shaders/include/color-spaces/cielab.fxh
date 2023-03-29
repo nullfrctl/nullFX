@@ -2,7 +2,7 @@
 #pragma once
 
 #include "include/color-spaces/ciexyz.fxh"
-#include "include/intrinsics.fxh"
+#include "include/global.fxh"
 
 static const float epsilon = (216.0 / 24389.0);
 static const float kappa = (24389.0 / 27.0);
