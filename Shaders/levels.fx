@@ -4,6 +4,7 @@
 #include "ReShadeUI.fxh"
 #include "include/color-spaces/oklab.fxh"
 #include "include/global.fxh"
+#include "include/linearized/Linearize.fxh"
 
 // clang-format off
 uniform bool _ApplyToe <
@@ -58,7 +59,7 @@ float ApplyLevelsOut(in float x, in float black_out, in float white_out)
 
 float3 PS_Levels(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET 
 {
-    float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
+    float3 color = GetBackBuffer(texcoord.xy).rgb;
     float3 oklab = SRGBToOklab(color);
 
     if (_ApplyToe)
@@ -72,7 +73,7 @@ float3 PS_Levels(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD
         oklab.x = RemoveToe(oklab.x);
 
     color = OklabToSRGB(oklab);
-    return color;
+    return DisplayBackBuffer(color);
 }
 
 technique Levels < ui_label = "Levels."; >

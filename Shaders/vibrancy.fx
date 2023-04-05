@@ -4,6 +4,7 @@
 #include "ReShadeUI.fxh"
 #include "include/color-spaces/oklab.fxh"
 #include "include/global.fxh"
+#include "include/linearized/Linearize.fxh"
 
 // clang-format off
 uniform float _Vibrancy < __UNIFORM_DRAG_FLOAT1
@@ -21,7 +22,7 @@ uniform float _Vibrancy < __UNIFORM_DRAG_FLOAT1
 
 float3 PS_Vibrancy(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET
 {
-    float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
+    float3 color = GetBackBuffer(texcoord.xy).rgb;
     float3 oklch = SRGBToOklch(color);
 
     // Get absolute of vibrancy to stop cheaters.
@@ -34,7 +35,7 @@ float3 PS_Vibrancy(in float4 position : SV_POSITION, in float2 texcoord : TEXCOO
 
     color = OklchToSRGB(oklch);
 
-    return color;
+    return DisplayBackBuffer(color);
 }
 
 technique Vibrancy < ui_label = "Vibrancy";

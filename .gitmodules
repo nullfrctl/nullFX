@@ -1,0 +1,3 @@
+[submodule "Shaders/include/linearized"]
+	path = Shaders/include/linearized
+	url = https://github.com/nullfrctl/ReShade-Linearized

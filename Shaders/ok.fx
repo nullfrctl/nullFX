@@ -4,6 +4,7 @@
 #include "ReShadeUI.fxh"
 #include "include/color-spaces/oklab.fxh"
 #include "include/global.fxh"
+#include "include/linearized/Linearize.fxh"
 
 // clang-format off
 uniform bool _ApplyToe <
@@ -48,7 +49,7 @@ uniform float2 _OklabAB < __UNIFORM_DRAG_FLOAT2
 
 float3 PS_Okcolor(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET
 {
-    float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
+    float3 color = GetBackBuffer(texcoord.xy).rgb;
     float3 oklch = SRGBToOklch(color);
 
     if (_ApplyToe)
@@ -74,7 +75,7 @@ float3 PS_Okcolor(in float4 position : SV_POSITION, in float2 texcoord : TEXCOOR
 
     color = OklabToSRGB(oklab);
 
-    return color;
+    return DisplayBackBuffer(color);
 }
 
 technique Okcolor < ui_label = "Ok color spaces.";

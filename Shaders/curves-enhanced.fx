@@ -5,6 +5,7 @@
 #include "include/color-spaces/oklab.fxh"
 #include "include/global.fxh"
 #include "include/sigmoids.fxh"
+#include "include/linearized/Linearize.fxh"
 
 // clang-format off
 uniform bool _ApplyToe <
@@ -84,7 +85,7 @@ float ApplyContrast(in float x)
 
 float3 PS_CurvesEnhanced(in float4 position : SV_POSITION, in float2 texcoord : TEXCOORD) : SV_TARGET
 {
-    float3 color = tex2D(nullFX::BackBuffer, texcoord).rgb;
+    float3 color = GetBackBuffer(texcoord.xy).rgb;
     float3 oklch = SRGBToOklch(color);
 
     if (_ApplyToe)
@@ -117,7 +118,7 @@ float3 PS_CurvesEnhanced(in float4 position : SV_POSITION, in float2 texcoord : 
         oklch.x = RemoveToe(oklch.x);
 
     color = OklchToSRGB(oklch);
-    return color;
+    return DisplayBackBuffer(color);
 }
 
 technique CurvesEnhanced < ui_label = "Curves enhanced.";

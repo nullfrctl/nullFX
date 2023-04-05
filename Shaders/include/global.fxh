@@ -51,12 +51,6 @@ float fast_atan2(float y, float x)
 // nullFX-specific.
 namespace nullFX
 {
-sampler2D BackBuffer
-{
-    Texture = ReShade::BackBufferTex;
-    SRGBTexture = true;
-};
-
 // Smallest 32-bit normal number.
 static const float FP32Min = 1.1754943508 * 10e-38;
 
